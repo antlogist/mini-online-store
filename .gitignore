@@ -1,2 +1,3 @@
 /db
-/config/Database.php
+node_modules
+package-lock.json
