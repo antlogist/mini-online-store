@@ -6,12 +6,18 @@ class Product {
     private $conn;
     private $table = 'products';
 
-    // Database in counstructor
+   /**
+   *  Database in counstructor
+   *  @param $db
+   */
     public function __construct($db) {
         $this->conn = $db;
     }
 
-    // Get all products
+  /**
+   * Get all products
+   * @return mixed
+   */
     public function read() {
         
         // Create query
