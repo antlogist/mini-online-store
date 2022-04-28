@@ -90,9 +90,6 @@
 
 <script>
 
-// import Home from './components/Home.vue';
-// import Cart from './components/Cart.vue';
-
 export default {
     data() {
         return {
@@ -102,11 +99,8 @@ export default {
     mounted() {
         this.emitter.on('cart-refresh', countItems => {
             this.countItems = countItems;
-        })
+        });
+        this.countItems = countItemsOnLoad;
     }
-    // components: {
-    //     Home,
-    //     Cart
-    // },
 }
 </script>
