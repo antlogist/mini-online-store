@@ -6,16 +6,22 @@ class Product {
     private $conn;
     private $table = 'products';
 
-    // Database in counstructor
+   /**
+   *  Database in counstructor
+   *  @param $db
+   */
     public function __construct($db) {
         $this->conn = $db;
     }
 
-    // Get all products
+  /**
+   * Get all products
+   * @return mixed
+   */
     public function read() {
         
         // Create query
-        $query = 'SELECT id, name, img_url, description, price FROM products';
+        $query = 'SELECT id, sku, name, img_url, description, price FROM products';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
