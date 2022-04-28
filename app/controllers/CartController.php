@@ -1,5 +1,4 @@
 <?php
-include_once('../classes/Session.php');
 
 class CartController {
 

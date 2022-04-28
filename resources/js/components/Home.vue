@@ -10,7 +10,7 @@
                         <p class="card-text" v-text="product.description"></p>
                         <div class="d-flex justify-content-between align-items-center">
                             <p v-text="product.price + currency" class="my-0 py-0 fw-bolder fs-5"></p>
-                            <a href="#" class="btn btn-primary">Купить</a>
+                            <a @click="addItemToCart(product.id)" class="btn btn-primary">Купить</a>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,8 @@ export default {
             products: null,
             loading: false, 
             currency: ' руб',
-            error: false
+            error: false,
+            token: token
         }
     },
     created() {
@@ -58,5 +59,16 @@ export default {
             console.log(error.config);
         });
     },
+    methods: {
+        addItemToCart(id) {
+            this.axios.post('./app/api/cart/add.php', JSON.stringify({
+                product_id: id,
+                qty: 1,
+                token: token
+            })).then(response => {
+                console.log(response);
+            })
+        }
+    }
 }
 </script>
