@@ -31,6 +31,7 @@
         
         $product_item = array(
             'id' => $id,
+            'sku' => $sku,
             'name' => $name,
             'img_url' => $img_url,
             'description' => html_entity_decode($description),

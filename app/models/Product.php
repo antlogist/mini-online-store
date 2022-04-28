@@ -15,7 +15,7 @@ class Product {
     public function read() {
         
         // Create query
-        $query = 'SELECT id, name, img_url, description, price FROM products';
+        $query = 'SELECT id, sku, name, img_url, description, price FROM products';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
