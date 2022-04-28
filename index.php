@@ -1,6 +1,11 @@
 <?php
     // Start session if it is not already started
     if (!isset($_SESSION)) session_start();
+
+    include_once 'app/classes/CSRFToken.php';
+
+    // Set session token
+    $token = CSRFToken::_token();
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +23,9 @@
     <script src="dist/js/all.js?ver=<?= microtime(); ?>" defer></script>
 </head>
 <body>
+    <script>
+      const token = '<?= $token?>';
+    </script>
 
     <div id="app"></div>
 
