@@ -28,7 +28,7 @@
                                     class="form-control" 
                                     id="productQuantity" 
                                     min="1" 
-                                    max="100" 
+                                    max="1000" 
                                     style="max-width: 100px;">
                             </div>
                             <!--/Quantity-->
@@ -125,8 +125,8 @@ export default {
                     if(this.qty[key] < 1) {
                         this.qty[key] = 1;
                     }
-                    if(this.qty[key] > 100) {
-                        this.qty[key] = 100;
+                    if(this.qty[key] > 1000) {
+                        this.qty[key] = 1000;
                     }
                 })
             },
