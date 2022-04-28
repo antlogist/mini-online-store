@@ -1,6 +1,6 @@
 <template>
     <div class="container py-5">
-        <div v-if="products !== null" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div v-if="products !== null && !error" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             <div class="col" v-for="product in products" :key="'pr' + product.id">
                 <div class="card">
                     <img v-bind:src="product.img_url" class="card-img-top" alt="product">
@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div v-else>
+        <div v-if="error" class="text-center py-5">
             <h4>Что-то пошло не так</h4>
         </div>
     </div>
@@ -28,7 +28,8 @@ export default {
         return {
             products: null,
             loading: false, 
-            currency: ' руб'
+            currency: ' руб',
+            error: false
         }
     },
     created() {
@@ -53,6 +54,7 @@ export default {
                 console.log('Error', error.message);
             }
             this.loading = false;
+            this.error = true;
             console.log(error.config);
         });
     },
