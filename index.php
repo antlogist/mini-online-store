@@ -1,3 +1,8 @@
+<?php
+    // Start session if it is not already start
+    if (!isset($_SESSION)) session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
