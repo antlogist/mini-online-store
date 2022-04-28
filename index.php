@@ -1,5 +1,5 @@
 <?php
-    // Start session if it is not already start
+    // Start session if it is not already started
     if (!isset($_SESSION)) session_start();
 ?>
 
