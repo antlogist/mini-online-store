@@ -6,6 +6,10 @@
 
     // Set session token
     $token = CSRFToken::_token();
+    
+    echo "<pre>";
+    var_dump($_SESSION);
+    echo "</pre>";
 ?>
 
 <!DOCTYPE html>

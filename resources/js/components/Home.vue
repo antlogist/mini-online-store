@@ -67,6 +67,8 @@ export default {
                 token: token
             })).then(response => {
                 console.log(response);
+                // Refresh cart if an item has been added
+                this.emitter.emit('cart-refresh', response.data.countItems);
             })
         }
     }
