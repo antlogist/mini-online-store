@@ -5,11 +5,11 @@
         <div class="container navbar-top d-flex justify-content-between align-items-center">
             <div><a class="text-decoration-none link-light" href="tel:+71234567890" >+7-123-456-78-90</a></div>
             <div>
-                <button type="button" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                <button @click="getCartItems" type="button" class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#cartModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart mb-1 me-1" viewBox="0 0 16 16">
                     <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                     </svg>
-                    <span class="d-inline-block">1</span>
+                    <span class="d-inline-block fs-6" v-text="countItems"></span>
                 </button>
             </div>
         </div>
@@ -67,15 +67,42 @@
     <!--/Router view-->
 
     <!--Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="cartModalLabel">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Изображение</th>
+                                <th scope="col">Артикул</th>
+                                <th scope="col">Наименование</th>
+                                <th scope="col">Цена за единицу</th>
+                                <th scope="col">Кол-во</th>
+                                <th scope="col">Общая стоимость</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in cartItems" :key="item.id">
+                                <td v-text="++index"></td>
+                                <td v-text="item.img_url"></td>
+                                <td v-text="item.sku"></td>
+                                <td v-text="item.name"></td>
+                                <td v-text="item.price"></td>
+                                <td v-text="item.qty"></td>
+                                <td v-text="item.total_price"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h1 v-text="cartTotal + currency"></h1>
+                </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -90,18 +117,33 @@
 
 <script>
 
-import Home from './components/Home.vue';
-import Cart from './components/Home.vue';
-
 export default {
     data() {
         return {
-
+            countItems: 0,
+            cartItems: [],
+            cartTotal: 0,
+            currency: ' руб',
         }
     },
-    components: {
-        Home,
-        Cart
+    mounted() {
+        this.emitter.on('cart-refresh', countItems => {
+            this.countItems = countItems;
+        });
+        this.countItems = countItemsOnLoad;
+    },
+    methods: {
+        getCartItems() {
+            this.axios.get('./app/api/cart/read.php').then(response => {
+                console.log(response.data.items);
+                this.cartItems = response.data.items;
+                // Sort cart items
+                this.cartItems.sort((a, b) => a.sort_index > b.sort_index ? 1 : -1);
+                this.cartTotal = response.data.cartTotal;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
     }
 }
 </script>

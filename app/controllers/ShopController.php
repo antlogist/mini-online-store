@@ -17,6 +17,12 @@ class ShopController {
         echo json_encode(["fail" => "Malicious Activity"]);
         exit;
       }
+
+      if($request->qty > 1000 || $request->qty < 1) {
+        echo json_encode(["fail" => "Malicious Activity"]);
+        exit;
+      }
+
       CartController::add($request);
 
       $countItems = count(Session::get("user_cart"));

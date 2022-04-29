@@ -6,6 +6,9 @@
 
     // Set session token
     $token = CSRFToken::_token();
+
+    // Set qty products in cart on load
+    $countItemsOnLoad = count(Session::get("user_cart"));
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +27,8 @@
 </head>
 <body>
     <script>
-      const token = '<?= $token?>';
+      const token = '<?= $token ?>';
+      const countItemsOnLoad = '<?= $countItemsOnLoad ?>';
     </script>
 
     <div id="app"></div>
