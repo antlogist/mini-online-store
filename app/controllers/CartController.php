@@ -1,4 +1,7 @@
 <?php
+if (!isset($_SESSION)) session_start();
+include_once '../../classes/Session.php';
+include_once '../../functions/helper.php';
 
 class CartController {
 
@@ -65,6 +68,80 @@ class CartController {
  */
   static function clear() {
     Session::remove("user_cart");
+  }
+
+
+  /**
+   * Get cart items
+   * @return mixed
+   * @throws \Exception
+   */
+
+  static function getCartItems() {
+
+    // Get website link
+    $link = getWebsiteUrl();
+    $link .= '/app/api/product/read.php';
+
+    // Get all products
+    $products = json_decode(file_get_contents($link));
+    $productsObject = array();
+
+    // Transform array into object
+    foreach($products as $product) {
+      $productsObject[$product->id] = $product;
+    }
+    
+    try {
+      $result = array();
+      $cartTotal = 0;
+      $cartTotalVat = 0;
+
+      if(!Session::has("user_cart") || count(Session::get("user_cart")) < 1) {
+        echo json_encode([
+          "fail" => "No items in the cart"
+        ]);
+        exit;
+      }
+      $index = 0;
+      foreach(Session::get("user_cart") as $cart_items) {
+        $productId = $cart_items["product_id"];
+        $quantity = $cart_items["quantity"];
+        $item = $productsObject[$productId];
+
+        if(!$item) {
+          continue;
+        }
+
+        $totalPrice = $item->price * $quantity;
+        $cartTotal = $totalPrice + $cartTotal;
+        $totalPrice = number_format($totalPrice, 2);
+
+
+        array_push($result, [
+          "id" => $item->id,
+          "img_url" => $item->img_url,
+          "sku" => $item->sku,
+          "name" => $item->name,
+          "price" => $item->price,
+          "qty" => $quantity,
+          "total_price" => $totalPrice,
+          "sort_index" => $index
+        ]);
+        
+        $index++;
+      }
+
+      $cartTotal = number_format($cartTotal, 2);
+
+      Session::add("cartTotal", $cartTotal);
+
+      echo json_encode(["items" => $result, "cartTotal" => $cartTotal]);
+      exit;
+
+    } catch(\Exception $ex){
+      echo $ex;
+    }
   }
 
 }
