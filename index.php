@@ -27,7 +27,7 @@
     <!--Custom style-->
     <link rel="stylesheet" href="dist/css/all.css">
     <!--Vue js-->
-    <script src="dist/js/all.js?ver=<?= microtime(); ?>" defer></script>
+    <script src="dist/js/all.js" defer></script>
 </head>
 <body>
     <script>
