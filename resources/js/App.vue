@@ -105,8 +105,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary" @click="createOrder">Оформить заказ</button>
                 </div>
             </div>
         </div>
@@ -134,12 +134,24 @@ export default {
     },
     methods: {
         getCartItems() {
+            if(this.countItems <= 0) {
+                return;
+            }
             this.axios.get('./app/api/cart/read.php').then(response => {
-                console.log(response.data.items);
                 this.cartItems = response.data.items;
                 // Sort cart items
                 this.cartItems.sort((a, b) => a.sort_index > b.sort_index ? 1 : -1);
                 this.cartTotal = response.data.cartTotal;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        createOrder() {
+            this.axios.post('./app/api/order/create.php', JSON.stringify({
+                token: token
+            })).then(response => {
+                // Refresh cart if an item has been added
+                console.log(response)
             }).catch(function (error) {
                 console.log(error);
             });
