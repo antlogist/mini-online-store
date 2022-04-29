@@ -33,7 +33,7 @@
                         <router-link class="nav-link" to="/">Домой</router-link> 
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/cart">Корзина</router-link> 
+                        <router-link class="nav-link" to="/">Ссылка</router-link> 
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/">Ссылка</router-link> 
@@ -71,27 +71,29 @@
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="cartModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="cartModalLabel">Корзина покупок</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table align-middle">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Изображение</th>
                                 <th scope="col">Артикул</th>
                                 <th scope="col">Наименование</th>
-                                <th scope="col">Цена за единицу</th>
+                                <th scope="col">Цена за единицу, руб.</th>
                                 <th scope="col">Кол-во</th>
-                                <th scope="col">Общая стоимость</th>
+                                <th scope="col">Общая стоимость, руб.</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="countItems > 0">
                             <tr v-for="(item, index) in cartItems" :key="item.id">
                                 <td v-text="++index"></td>
-                                <td v-text="item.img_url"></td>
+                                <td>
+                                    <img :src="item.img_url" class="img-thumbnail" style="max-width: 100px;" alt="product">
+                                </td>
                                 <td v-text="item.sku"></td>
                                 <td v-text="item.name"></td>
                                 <td v-text="item.price"></td>
@@ -99,14 +101,24 @@
                                 <td v-text="item.total_price"></td>
                             </tr>
                         </tbody>
+                        <tbody v-else-if="success === false" class="text-center">
+                            <td colspan="7">
+                                <h5 class="py-5">Ваша корзина пуста</h5>
+                            </td>
+                        </tbody>
+                        <tbody v-else-if="success === true" class="text-center">
+                            <td colspan="7">
+                                <h5 class="py-5" v-text="cartMessage"></h5>
+                            </td>
+                        </tbody>
                     </table>
                     <h1 v-text="cartTotal + currency"></h1>
                 </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button :disabled="countItems < 1" type="button" class="btn btn-primary" @click="createOrder">Оформить заказ</button>
                 </div>
             </div>
         </div>
@@ -124,6 +136,8 @@ export default {
             cartItems: [],
             cartTotal: 0,
             currency: ' руб',
+            cartMessage: '',
+            success: false
         }
     },
     mounted() {
@@ -134,12 +148,34 @@ export default {
     },
     methods: {
         getCartItems() {
+            if(this.countItems <= 0) {
+                return;
+            }
             this.axios.get('./app/api/cart/read.php').then(response => {
-                console.log(response.data.items);
                 this.cartItems = response.data.items;
                 // Sort cart items
                 this.cartItems.sort((a, b) => a.sort_index > b.sort_index ? 1 : -1);
                 this.cartTotal = response.data.cartTotal;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        createOrder() {
+            this.axios.post('./app/api/order/create.php', JSON.stringify({
+                token: token
+            })).then(response => {
+                // Refresh cart if an item has been added
+                this.countItems = 0;
+                this.cartItems = [];
+                this.cartTotal = 0;
+                this.success = true;
+
+                if(response['data'].success) {
+                    this.cartMessage = response['data'].success;
+                } else {
+                    this.cartMessage = response['data'].fail;
+                }
+
             }).catch(function (error) {
                 console.log(error);
             });

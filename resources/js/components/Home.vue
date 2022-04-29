@@ -61,6 +61,19 @@
             </div>
         </div>
 
+        <!--Cart toast TOKEN-->
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="cartToastDanger" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-danger text-white">
+                    <strong class="me-auto">Токен</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body bg-white">
+                    Срок действия токена истек
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -99,18 +112,26 @@ export default {
                 token: token
             })).then(response => {
                 // Refresh cart if an item has been added
-                this.emitter.emit('cart-refresh', response.data.countItems);
 
-                // Reset qty
-                this.qty[id] = 1
+                if(response['data'].success) {
+                    this.emitter.emit('cart-refresh', response.data.countItems);
 
-                // Added product name
-                this.addedProductName = name;
+                    // Reset qty
+                    this.qty[id] = 1
 
-                // Show toast
-                const cartToast = document.getElementById('cartToast');
-                const toast = new bootstrap.Toast(cartToast);
-                toast.show();
+                    // Added product name
+                    this.addedProductName = name;
+
+                    // Show toast
+                    const cartToast = document.getElementById('cartToast');
+                    const toast = new bootstrap.Toast(cartToast);
+                    toast.show();
+                } else if (response['data'].fail) {
+                   // Show toast
+                    const cartToastDanger = document.getElementById('cartToastDanger');
+                    const toastDanger = new bootstrap.Toast(cartToastDanger);
+                    toastDanger.show();
+                }
             }).catch(function (error) {
                 this.loading = false;
                 this.error = true;

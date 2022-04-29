@@ -8,7 +8,11 @@
     $token = CSRFToken::_token();
 
     // Set qty products in cart on load
-    $countItemsOnLoad = count(Session::get("user_cart"));
+    if(Session::get("user_cart")) {
+        $countItemsOnLoad = count(Session::get("user_cart"));
+    } else {
+        $countItemsOnLoad = 0;
+    }
 ?>
 
 <!DOCTYPE html>

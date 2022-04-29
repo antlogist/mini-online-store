@@ -77,7 +77,7 @@ class CartController {
    * @throws \Exception
    */
 
-  static function getCartItems() {
+  static function getCartItems($reqFromOrderClass = false) {
 
     // Get website link
     $link = getWebsiteUrl();
@@ -136,8 +136,12 @@ class CartController {
 
       Session::add("cartTotal", $cartTotal);
 
-      echo json_encode(["items" => $result, "cartTotal" => $cartTotal]);
-      exit;
+      if($reqFromOrderClass === true) {
+        return $result;
+      } else {
+        echo json_encode(["items" => $result, "cartTotal" => $cartTotal]);
+        exit;
+      }
 
     } catch(\Exception $ex){
       echo $ex;
