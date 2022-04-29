@@ -20,7 +20,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
 
-            <router-link class="navbar-brand text-uppercase" to="/">Магазин</router-link> 
+            <router-link class="navbar-brand text-uppercase" to="/mini-store">Магазин</router-link> 
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -30,29 +30,29 @@
 
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/">Домой</router-link> 
+                        <router-link class="nav-link" to="/mini-store">Домой</router-link> 
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/">Ссылка</router-link> 
+                        <router-link class="nav-link" to="/mini-store">Ссылка</router-link> 
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/">Ссылка</router-link> 
+                        <router-link class="nav-link" to="/mini-store">Ссылка</router-link> 
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/">Ссылка</router-link> 
+                        <router-link class="nav-link" to="/mini-store">Ссылка</router-link> 
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/">Ссылка</router-link> 
+                        <router-link class="nav-link" to="/mini-store">Ссылка</router-link> 
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Ссылка
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark bg-primary" aria-labelledby="navbarDropdownMenuLink">
-                            <li><router-link class="dropdown-item" to="/">Ссылка</router-link> </li>
-                            <li><router-link class="dropdown-item" to="/">Ссылка</router-link> </li>
-                            <li><router-link class="dropdown-item" to="/">Ссылка</router-link> </li>
-                            <li><router-link class="dropdown-item" to="/">Ссылка</router-link> </li>
+                            <li><router-link class="dropdown-item" to="/mini-store">Ссылка</router-link> </li>
+                            <li><router-link class="dropdown-item" to="/mini-store">Ссылка</router-link> </li>
+                            <li><router-link class="dropdown-item" to="/mini-store">Ссылка</router-link> </li>
+                            <li><router-link class="dropdown-item" to="/mini-store">Ссылка</router-link> </li>
                         </ul>
                     </li>
                 </ul>

@@ -5,12 +5,12 @@ import Cart from '../components/Cart.vue';
 
 const routes = [
     {
-        path: '/',
+        path: '/mini-store',
         name: 'Home',
         component: Home
     },
     {
-        path: '/cart',
+        path: '/mini-store/cart',
         name: 'Cart',
         component: Cart
     },
