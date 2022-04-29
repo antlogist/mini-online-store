@@ -10,6 +10,8 @@
     // Set qty products in cart on load
     if(Session::get("user_cart")) {
         $countItemsOnLoad = count(Session::get("user_cart"));
+    } else {
+        $countItemsOnLoad = 0;
     }
 ?>
 
