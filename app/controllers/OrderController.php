@@ -57,12 +57,12 @@ class OrderController {
 
             Session::remove('user_cart');
 
-            echo json_encode(["success" => "Thank you for your order"]);
+            echo json_encode(["success" => "Спасибо за покупку!"]);
             exit;
 
         }
 
-        echo json_encode(["fail" => "Token mismatch"]);
+        echo json_encode(["fail" => "Срок действия токена истёк. Обновите страницу сайта"]);
         exit;
 
     }
