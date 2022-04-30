@@ -6,8 +6,10 @@
 
             <!--Products loop-->
             <div class="col" v-for="(product, index) in products" :key="product.sku">
-                <div class="card">
+                <div class="card h-100">
                     <img v-bind:src="product.img_url" class="card-img-top" alt="product">
+
+                    <!--Card body-->
                     <div class="card-body">
                         <h5 class="card-title" v-text="product.name"></h5>
                         <p class="fs-6 fw-light">Артикул: <span v-text="product.sku"></span></p>
@@ -19,25 +21,37 @@
                             <p v-text="product.price + currency" class="my-0 py-0 fw-bolder fs-5"></p>
                             <!--/price-->
 
-                            <!--Quantity-->
-                            <div>
-                                <label for="productQuantity" class="form-label">Количество</label>
-                                <input 
-                                    v-model="qty[product.id]"
-                                    type="number" 
-                                    class="form-control" 
-                                    id="productQuantity" 
-                                    min="1" 
-                                    max="1000" 
-                                    style="max-width: 100px;">
-                            </div>
-                            <!--/Quantity-->
                         </div>
 
-                        <div class="d-flex justify-content-center align-items-center">
+                    </div>
+                    <!--/Card body-->
+
+                    <!--Card Footer-->
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+
+                        <!--Quantity-->
+                        <div class="me-2">
+                            <label for="productQuantity" class="form-label">Количество</label>
+                            <input 
+                                v-model="qty[product.id]"
+                                type="number" 
+                                class="form-control" 
+                                id="productQuantity" 
+                                min="1" 
+                                max="1000" 
+                                style="max-width: 100px;">
+                        </div>
+                        <!--/Quantity-->
+
+                        <!--Add to cart-->
+                        <div>
                             <a @click="addItemToCart(product.id, product.name, index)" class="btn btn-primary">Добавить в корзину</a>
                         </div>
+                        <!--/Add to cart-->
+
                     </div>
+                    <!--/Card Footer-->
+
                 </div>
             </div>
             <!--/Product loop-->
