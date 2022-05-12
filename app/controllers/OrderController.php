@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 include_once '../../classes/Request.php';
 include_once '../../classes/CSRFToken.php';
@@ -8,20 +8,22 @@ include_once '../../models/Order.php';
 include_once 'CartController.php';
 
 
-class OrderController {
+class OrderController
+{
 
-  /**
-   * Create order
-   * @param $request
-   * @return mixed
-   */
-    public function createOrder() {
+    /**
+     * Create order
+     *
+     * @return void
+     */
+    public function createOrder()
+    {
 
         // Receive post request
         $request = json_decode(file_get_contents('php://input'), true);
         $request = (object) $request;
 
-        if(!Session::has("user_cart") || count(Session::get("user_cart")) < 1) {
+        if (!Session::has("user_cart") || count(Session::get("user_cart")) < 1) {
             echo json_encode([
                 "fail" => "No items in the cart"
             ]);
@@ -41,7 +43,7 @@ class OrderController {
 
             $uniq_id = time();
 
-            foreach($cart_items as $cart_item) {
+            foreach ($cart_items as $cart_item) {
 
                 $product_id = $cart_item['id'];
                 $order_id = $uniq_id;
@@ -49,21 +51,18 @@ class OrderController {
                 $user_id = 1;
                 $qty = $cart_item['qty'];
                 $price = $cart_item['price'];
-                $total_price= $price * $qty;
+                $total_price = $price * $qty;
 
                 $order->create($product_id, $order_id, $product_sku, $user_id, $qty, $price, $total_price);
-
             }
 
             Session::remove('user_cart');
 
             echo json_encode(["success" => "Спасибо за покупку!"]);
             exit;
-
         }
 
         echo json_encode(["fail" => "Срок действия токена истёк. Обновите страницу сайта"]);
         exit;
-
     }
 }
