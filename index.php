@@ -4,7 +4,7 @@ if (!isset($_SESSION)) session_start();
 
 include_once 'app/classes/CSRFToken.php';
 
-echo 'test-branch';
+echo 'test-branch-2';
 
 // Set session token
 $token = CSRFToken::_token();
